@@ -1,0 +1,25 @@
+a{
+    text-decoration: none;
+}
+.underline{
+    text-decoration: underline;
+}
+body{
+    background-color: #0e0e0e;
+}
+
+.nav-color:hover{
+    color: white;
+}
+.nav-color{
+    color: #9ba3b4;
+    cursor: pointer;
+    padding-left: 10px ;  
+}
+
+.text-white{
+    color: white;
+}
+.text-blue{
+    color: blue;
+}
