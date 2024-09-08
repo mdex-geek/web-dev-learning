@@ -1,9 +1,9 @@
 {
-  "name": "week_5",
+  "name": "class4.1",
   "module": "index.js",
   "type": "module",
   "scripts": {
-    "start": "bun index.js"
+    "start": " bun index.js"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -12,6 +12,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "chalk": "^5.1.2",
+    "commander": "^12.1.0"
   }
 }
