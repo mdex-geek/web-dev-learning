@@ -1,11 +1,11 @@
 import express from 'express';
-import  JsonWebToken  from 'jsonwebtoken';
 import mongoose from "mongoose";
 const port = 3000;
 import { userRoute } from './routes/users';
 import { courseRoute } from './routes/courses';
 import { adminRoute } from "./routes/admin";
 const app = express();
+
 app.use(express.json());
 app.use('/api/v1/admin',adminRoute)
 app.use('/api/v1/user',userRoute);

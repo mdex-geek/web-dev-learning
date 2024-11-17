@@ -2,6 +2,7 @@ import { Router } from "express";
 
 const courseRoute = Router();
 
+
 courseRoute.post("/purchase", (req, res) => {
   //send back datato server
   res.json({
