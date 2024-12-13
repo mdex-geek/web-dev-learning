@@ -10,16 +10,24 @@ const userschema = new Schema({
 const tagschema = new Schema({
     tags: {type:String, required:true, unique:true}
 });
+//{
+//    "tags: ""
+//} let a = tag.findOne({"tags": 'your_tags'})
+// if (!a) {
+//   tag.create({"tags": ""})
+// }
 
-const  contentType:string[] = ['image','video','article','audio'];
+const  contentType: string[] = ['image','video','article','audio'];
 
 const contentSchema = new Schema({
     link: {type:String, required:true},
-    type: {type:String, required:true,enum:contentType},
+    type: {type:String, required:true, enum: contentType},
     title: {type:String, required:true},
-    tags: [{type: Types.ObjectId, ref:'tags'}],
+    tags: {type: [tagschema]},
     userId: [{type:Types.ObjectId, ref:'user'}],
 });
+
+// tags: [{tags: ""}, {tags: ""}]
 
 export const userModel = model('user',userschema);
 export const tagsModel = model('tags',tagschema);

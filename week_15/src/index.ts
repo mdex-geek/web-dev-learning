@@ -2,8 +2,9 @@ import express, { json , Response,Request} from "express";
 import mongoose from "mongoose";
 import * as jwt from "jsonwebtoken"; // Import all as `jwt`
 import z from "zod";
-import { userModel } from "./database/db";
-import * as bcrypt from 'bcrypt'; // Import all as `bcrypt`
+import {contentModel, tagsModel, userModel} from "./database/db";
+import * as bcrypt from 'bcrypt';
+import middleware from "./middleware/middleware"; // Import all as `bcrypt`
 require('dotenv').config()
 
 
@@ -148,7 +149,44 @@ app.post("/api/v1/signin", async (req:Request, res:Response) => {
 
 })
 
-app.post("/api/v1/content", (req, res) => {
+//@ts-ignore
+app.post("/api/v1/content", middleware, async (req:Request, res:Response) => {
+    const {link,type,title,tags =[]}:ContentRequestBody =req.body;
+
+    const tagsArray = Array.isArray(tags) ? tags : [];
+
+    try{
+        //@ts-ignore
+        const userId = req.userId;
+
+        const tagIds = await Promise.all(
+            tagsArray.map(async (tag: string) => {
+                if (typeof tag !== 'string') {
+                    throw new Error('Invalid tag format');
+                }
+                // Find or create the tag. If it doesn't exist, create it.
+                //@ts-ignore
+                const [tagRecord] = await tagsModel.findOrCreate({
+                    where: {  tag },  // Look for the tag by name
+                    defaults: {  tag } // If not found, create it with the tag name
+                });
+
+                return tagRecord.id; // Return the tag's ID (not name)
+            })
+        );
+        await contentModel.create({
+            link,
+            type,
+            title,
+            //@ts-ignore
+            userId,
+            tags:tagIds,
+        })
+        return res.status(201).json({ message: 'Content created successfully' });
+    }catch (error) {
+        console.error('Error creating content:', error);
+        return res.status(500).json({ error: 'An error occurred while creating content' });
+    }
 
 })
 
